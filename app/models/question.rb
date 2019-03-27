@@ -34,7 +34,13 @@ class Question < ActiveRecord::Base
   }
 
   def self.display_categories
-    @categories.each { |category, id| puts category}
+    @categories.each_with_index { |(category,value), i| puts "#{i+1} #{category}"}
+  end
+
+  def self.get_category_name(num)
+    category_names = []
+    @categories.each{|category,id| category_names << category}
+    category_names[num-1]
   end
 
   def self.display_difficulty
