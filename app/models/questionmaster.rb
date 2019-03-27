@@ -10,5 +10,4 @@ class QuestionMaster < ActiveRecord::Base
   def update_correct(bool)
     self.update(correct: bool)
   end
-
 end

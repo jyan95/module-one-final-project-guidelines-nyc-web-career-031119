@@ -30,7 +30,7 @@ def correct?(question, answer)
   q = QuestionMaster.find_by(question_id: question.id, player_id: @current_player.id)
 
   if question["correct_answer"] == answer
-    puts "Correct!"
+    puts "Correct"
     q.update_correct(true)
     #increase score!
     case question["difficulty"]
@@ -43,7 +43,7 @@ def correct?(question, answer)
     end
       @streak += 1
   else
-    puts "Wrong!" #play sound, minus life
+    puts "Nice try." #play sound, minus life
     q.update_correct(false)
     @life -= 1
     @streak = 0
@@ -53,11 +53,11 @@ end
 def dead?
   case @life
   when 2
-    puts ''
+    puts "Current HP: 2"
   when 1
-    puts ''
+    puts "Current HP: 1"
   when 0
-    puts 'Great, you killed Ratman...'
+    puts 'You are dead.'
     true
   end
   # if @life == 0
@@ -84,8 +84,9 @@ end
 
 def get_category_difficulty
   Question.display_categories
-  puts "Choose a catergory (leave blank for all)"
-  category = $stdin.gets.chomp
+  puts "Choose a category (leave blank for all)"
+  num = $stdin.gets.chomp.to_i
+  category = Question.get_category_name(num)
   Question.display_difficulty
   puts "Choose a difficulty (leave blank for all)"
   difficulty = $stdin.gets.chomp.downcase
@@ -123,6 +124,8 @@ end
 def asker(q_array)
   # binding.pry
   q_array.each do |q|
+    puts "-"*25
+    puts "Category: #{q["category"]}"
     puts q["question"]
     answers = get_answers(q)
     answers.each_with_index{|a,i| puts "#{i+1} #{a}"}
