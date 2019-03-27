@@ -196,7 +196,7 @@ while playing
   end
 end
 
-##
+##ORACLE
 
 #choose mode
   #quickplay
