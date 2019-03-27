@@ -10,16 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190326211234) do
+ActiveRecord::Schema.define(version: 20190327171037) do
 
   create_table "players", force: :cascade do |t|
     t.string  "username"
     t.integer "high_score"
+    t.integer "streak"
   end
 
   create_table "question_masters", force: :cascade do |t|
     t.integer "question_id"
     t.integer "player_id"
+    t.boolean "correct"
   end
 
   create_table "questions", force: :cascade do |t|

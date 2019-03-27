@@ -1,18 +1,18 @@
 require_relative '../config/environment'
 require 'json'
-# puts "HELLO WORLD"
 
 
 def login(username)
   player = Player.validate(username)
   if player
-    puts "Welcome Back #{player.username}!"
+    puts "Here to try your luck again, #{player.username}?"
   else
     player = Player.new_user(username)
-    puts "Welcome #{player.username}!"
+    puts "Welcome to my game, #{player.username}!"
   end
   @current_player = player
   @score = 0
+  @streak = 0
   @life = 3
 end
 
@@ -20,28 +20,55 @@ def main_menu
   puts "What would you like to do?"
   puts "1. Start Game"
   puts "2. Stats"
+  # scoreboard
   puts "3. Reset Questions"
   puts "4. Exit"
   print "Please enter a number: "
 end
 
 def correct?(question, answer)
+  q = QuestionMaster.find_by(question_id: question.id, player_id: @current_player.id)
+
   if question["correct_answer"].downcase == answer
     puts "Correct!"
-    #increase score!!
-    @score += 1
+    q.update_correct(true)
+    #increase score!
+    case question["difficulty"]
+    when 'easy'
+      @score += 1
+    when 'medium'
+      @score += 2
+    when 'hard'
+      @score += 3
+    end
+      @streak += 1
   else
     puts "Wrong!" #play sound, minus life
+    q.update_correct(false)
     @life -= 1
+    @streak = 0
   end
 end
 
-def game_over?
-  if @life == 0
-    puts "You have been defeated!!"
-    false
+def dead?
+  case @life
+  when 2
+    puts ''
+  when 1
+    puts ''
+  when 0
+    puts 'Great, you killed Ratman...'
+    true
   end
+  # if @life == 0
+  #   puts "You have been defeated!!"
+  #   false
+  # end
+end
 
+def game_over
+  @current_player.update_streak(@streak) if @streak > @current_player.streak
+  @current_player.update_high_score(@score) if @score > @current_player.high_score
 end
 
 def start_game
@@ -52,7 +79,7 @@ def start_game
   # binding.pry
   questions = generate_questions(category, difficulty)
   asker(questions)
-
+  game_over
 end
 
 def get_category_difficulty
@@ -67,7 +94,6 @@ end
 
 def generate_questions(category, difficulty)
   # category, difficulty = get_category_difficulty
-
   questions_array = []
   until questions_array.length == 4
     question = get_question(category, difficulty)
@@ -101,7 +127,7 @@ def asker(q_array)
       exit
     end
     correct?(q, answer)
-    break if game_over?
+    break if dead?
   end
 end
 
@@ -115,6 +141,7 @@ welcome
 username = get_username
 login(username)
 playing = true
+
 while playing
   main_menu
   input = $stdin.gets.chomp.to_i
@@ -136,7 +163,7 @@ while playing
   end
 end
 
-##BATMAN NEEDS YOUR HELP AGAINST RIDDLER
+##BATMAN NEEDS YOUR HELP AGAINST BIDDLER
 ##TITLE: ORACLE
 
 # welcome, please enter your username
