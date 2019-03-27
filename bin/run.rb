@@ -17,7 +17,7 @@ def login(username)
 end
 
 def main_menu
-  puts "What would you like to do?"
+  puts "Here are your options:"
   puts "1. Start Game"
   puts "2. Stats"
   puts "3. Scoreboard"# scoreboard
@@ -196,8 +196,22 @@ while playing
   end
 end
 
-##BATMAN NEEDS YOUR HELP AGAINST BIDDLER
-##TITLE: ORACLE
+##
+
+#choose mode
+  #quickplay
+  #normal & sudden_death
+    # you've been captured by me - the almightly BIDDLER
+    # welcome to my GAME, you can play for your life
+    # lose
+      # looks like you're dead. maybe you can try again in another life
+    # win
+      # impressive! you have earned your freedom. until next time!
+    # win sudden_death
+      # wow! you might just be as smart as me!!
+
+
+###################################################
 
 # welcome, please enter your username
   # if exists
