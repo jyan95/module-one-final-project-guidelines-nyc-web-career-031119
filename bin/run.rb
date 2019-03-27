@@ -29,7 +29,7 @@ end
 def correct?(question, answer)
   q = QuestionMaster.find_by(question_id: question.id, player_id: @current_player.id)
 
-  if question["correct_answer"].downcase == answer
+  if question["correct_answer"] == answer
     puts "Correct!"
     q.update_correct(true)
     #increase score!
@@ -104,7 +104,6 @@ def generate_questions(category, difficulty)
       questions_array << q
     end
   end
-
   questions_array
 end
 
@@ -113,19 +112,31 @@ def validate_question(question)# current_player)
   !!QuestionMaster.find_by(question_id: question.id, player_id: @current_player.id)
 end
 
+def get_answers(q)
+  puts "Correct answer is #{q["correct_answer"]}"
+  answers = []
+  answers << q["correct_answer"]
+  answers << JSON.parse(q["incorrect_answers"])
+  answers.flatten.shuffle
+end
+
 def asker(q_array)
   # binding.pry
   q_array.each do |q|
     puts q["question"]
-    puts q["correct_answer"]
-    JSON.parse(q["incorrect_answers"]).each do |answer|
-      puts answer
-    end
+    answers = get_answers(q)
+    answers.each_with_index{|a,i| puts "#{i+1} #{a}"}
+    # puts q["question"]
+    # puts q["correct_answer"]
+    # JSON.parse(q["incorrect_answers"]).each do |answer|
+    #   puts answer
+    # end
     QuestionMaster.create(question_id: q.id, player_id: @current_player.id)
-    answer = $stdin.gets.chomp.downcase
-    if answer == "exit"
+    input = $stdin.gets.chomp.downcase
+    if input == "exit"
       exit
     end
+    answer = answers[input.to_i-1]
     correct?(q, answer)
     break if dead?
   end
