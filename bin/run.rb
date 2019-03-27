@@ -1,6 +1,5 @@
 require_relative '../config/environment'
 require 'json'
-# puts "HELLO WORLD"
 
 
 def login(username)

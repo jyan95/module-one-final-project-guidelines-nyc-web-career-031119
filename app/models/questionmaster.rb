@@ -8,10 +8,7 @@ class QuestionMaster < ActiveRecord::Base
   end
 
   def update_correct(bool)
-    # self.update(correct: bool)
-
     self.update(correct: bool)
-    # sometimes doesnt work?
   end
 
 end
