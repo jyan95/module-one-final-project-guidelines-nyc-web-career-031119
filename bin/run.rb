@@ -20,6 +20,7 @@ def main_menu
   puts "What would you like to do?"
   puts "1. Start Game"
   puts "2. Stats"
+  # scoreboard
   puts "3. Reset Questions"
   puts "4. Exit"
   print "Please enter a number: "

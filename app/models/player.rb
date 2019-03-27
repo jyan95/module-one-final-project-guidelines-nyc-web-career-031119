@@ -11,6 +11,7 @@ class Player < ActiveRecord::Base
   end
 
   def stats
+    puts "Showing stats for #{self.username}"
     puts "High Score: #{self.high_score}"
     puts "Questions Answered: #{self.questions_answered}"
     puts "Accuracy: #{self.accuracy}%"
