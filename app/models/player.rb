@@ -18,7 +18,7 @@ class Player < ActiveRecord::Base
 
   def questions_answered
     #SELECT * FROM QM WHERE user_id = self.id  .length
-    self.question_masters.length
+    self.questions.length
   end
 
   def accuracy
@@ -29,6 +29,7 @@ class Player < ActiveRecord::Base
 
   def reset_questions
     #  delete from db?
+    QuestionMaster.forget_questions(self)
   end
 
   def longest_streak

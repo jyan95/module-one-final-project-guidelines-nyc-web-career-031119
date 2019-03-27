@@ -27,9 +27,10 @@ def main_menu
 end
 
 def correct?(question, answer)
+  q = QuestionMaster.find_by(question_id: question.id, player_id: @current_player.id)
+
   if question["correct_answer"].downcase == answer
     puts "Correct!"
-    q = QuestionMaster.find_by(question_id: question.id, player_id: @current_player.id)
     q.update_correct(true)
     #increase score!
     case question["difficulty"]
