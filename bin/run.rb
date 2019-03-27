@@ -5,7 +5,7 @@ require 'json'
 def login(username)
   player = Player.validate(username)
   if player
-    puts "Here to try your luck again, #{player.username}?"
+    puts "Here to try your luck again, #{player.username}...?"
   else
     player = Player.new_user(username)
     puts "Welcome to my game, #{player.username}!"
@@ -20,9 +20,9 @@ def main_menu
   puts "What would you like to do?"
   puts "1. Start Game"
   puts "2. Stats"
-  # scoreboard
-  puts "3. Reset Questions"
-  puts "4. Exit"
+  puts "3. Scoreboard"# scoreboard
+  puts "4. Reset Your Questions"
+  puts "5. Exit"
   print "Please enter a number: "
 end
 
@@ -166,7 +166,6 @@ playing = true
 while playing
   main_menu
   input = $stdin.gets.chomp.to_i
-
   case input
   when 1
     clear_console
@@ -175,11 +174,19 @@ while playing
     clear_console
     @current_player.stats
   when 3
-    @current_player.reset_questions
-    puts '-'*30
-    puts 'your questions have been reset'
-    puts '-'*30
+    clear_console
+    Player.scoreboard
+    # binding.pry
   when 4
+    puts "Are you sure? (y/n)"
+    input = $stdin.gets.chomp
+    if input == 'y'
+      @current_player.reset_questions
+      puts '-'*30
+      puts 'your questions have been reset'
+      puts '-'*30
+    end
+  when 5
     clear_console
     puts "Cy@"
     playing = false

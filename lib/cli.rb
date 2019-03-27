@@ -1,5 +1,5 @@
 def welcome
-  puts "WELCOME TO OUR GAME"
+  puts "WELCOME TO MY GAME"
 end
 
 def get_username
@@ -9,7 +9,7 @@ def get_username
 end
 
 def prompt
-  puts "what would you like to do?"
+  puts "here are your options"
 end
 
 def clear_console

@@ -22,13 +22,17 @@ class Player < ActiveRecord::Base
 
   def questions_answered
     #SELECT * FROM QM WHERE user_id = self.id  .length
-    self.questions.length
+    self.reload.questions.length
   end
 
   def accuracy
     #SUM(right) / SUM(wrong) FROM QM where user_id = self.id
     correctness = self.question_masters.where("correct = ?", true).length / questions_answered.to_f
-    (correctness*100).round(2)
+    if correctness.class == "Integer"
+      (correctness*100).round(2)
+    else
+      0.00
+    end
   end
 
   def reset_questions
@@ -42,5 +46,12 @@ class Player < ActiveRecord::Base
 
   def update_high_score(new_high_score)
     self.update(high_score: new_high_score)
+  end
+
+  def self.scoreboard
+    puts "HIGHSCORES"
+    sorted = self.order(high_score: :desc)
+    sorted[0..5].each{|player| puts "#{player.username}: #{player.high_score}"}
+    puts '-'*30
   end
 end

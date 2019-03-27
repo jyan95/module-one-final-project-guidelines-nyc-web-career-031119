@@ -4,7 +4,7 @@ class QuestionMaster < ActiveRecord::Base
 
   def self.forget_questions(player)
     # QuestionMaster.find_by(player_id: player.id)
-    QuestionMaster.delete(player.questions)
+    QuestionMaster.delete(player.question_masters.ids)
   end
 
   def update_correct(bool)
