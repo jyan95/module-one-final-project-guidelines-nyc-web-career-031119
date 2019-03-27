@@ -10,5 +10,8 @@ end
 
 def prompt
   puts "what would you like to do?"
+end
 
+def clear_console
+  system('clear')
 end

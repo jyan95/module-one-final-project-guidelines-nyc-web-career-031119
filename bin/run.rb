@@ -30,7 +30,7 @@ def correct?(question, answer)
   q = QuestionMaster.find_by(question_id: question.id, player_id: @current_player.id)
 
   if question["correct_answer"] == answer
-    puts "Correct"
+    puts "u rite..."
     q.update_correct(true)
     #increase score!
     case question["difficulty"]
@@ -52,6 +52,8 @@ end
 
 def dead?
   case @life
+  when 3
+    puts "Current HP: 3"
   when 2
     puts "Current HP: 2"
   when 1
@@ -83,13 +85,17 @@ def start_game
 end
 
 def get_category_difficulty
+  puts "Choose a category #(leave blank for all)"
+  puts "-"*30
   Question.display_categories
-  puts "Choose a category (leave blank for all)"
   num = $stdin.gets.chomp.to_i
   category = Question.get_category_name(num)
-  Question.display_difficulty
+  clear_console
   puts "Choose a difficulty (leave blank for all)"
+  puts '-'*30
+  Question.display_difficulty
   difficulty = $stdin.gets.chomp.downcase
+  clear_console
   return category, difficulty
 end
 
@@ -140,6 +146,7 @@ def asker(q_array)
       exit
     end
     answer = answers[input.to_i-1]
+    clear_console
     correct?(q, answer)
     break if dead?
   end
@@ -162,14 +169,19 @@ while playing
 
   case input
   when 1
+    clear_console
     start_game
   when 2
+    clear_console
     @current_player.stats
   when 3
     @current_player.reset_questions
+    puts '-'*30
     puts 'your questions have been reset'
+    puts '-'*30
   when 4
-    puts "Bye!"
+    clear_console
+    puts "Cy@"
     playing = false
     # exit
   else
