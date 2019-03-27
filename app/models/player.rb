@@ -13,15 +13,18 @@ class Player < ActiveRecord::Base
   def stats
     puts "High Score: #{self.high_score}"
     puts "Questions Answered: #{self.questions_answered}"
-    puts "Percent Correct: #{self.percent_correct}"
+    puts "Accuracy: #{self.accuracy}%"
   end
 
   def questions_answered
     #SELECT * FROM QM WHERE user_id = self.id  .length
+    self.question_masters.length
   end
 
-  def percent_correct
+  def accuracy
     #SUM(right) / SUM(wrong) FROM QM where user_id = self.id
+    correctness = self.question_masters.where("correct = ?", true).length / questions_answered.to_f
+    (correctness*100).round(2)
   end
 
   def reset_questions

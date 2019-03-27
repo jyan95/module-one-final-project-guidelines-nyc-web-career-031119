@@ -29,6 +29,8 @@ end
 def correct?(question, answer)
   if question["correct_answer"].downcase == answer
     puts "Correct!"
+    q = QuestionMaster.find_by(question_id: question.id, player_id: @current_player.id)
+    q.update_correct(true)
     #increase score!
     case question["difficulty"]
     when 'easy'
@@ -41,6 +43,7 @@ def correct?(question, answer)
       @streak += 1
   else
     puts "Wrong!" #play sound, minus life
+    q.update_correct(false)
     @life -= 1
     @streak = 0
   end
