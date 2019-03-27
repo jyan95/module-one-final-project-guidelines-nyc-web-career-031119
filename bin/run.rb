@@ -6,13 +6,14 @@ require 'json'
 def login(username)
   player = Player.validate(username)
   if player
-    puts "Welcome Back #{player.username}!"
+    puts "Here to try your luck again, #{player.username}?"
   else
     player = Player.new_user(username)
-    puts "Welcome #{player.username}!"
+    puts "Welcome to my game, #{player.username}!"
   end
   @current_player = player
   @score = 0
+  @streak = 0
   @life = 3
 end
 
@@ -28,19 +29,37 @@ end
 def correct?(question, answer)
   if question["correct_answer"].downcase == answer
     puts "Correct!"
-    #increase score!!
-    @score += 1
+    #increase score!
+    case question["difficulty"]
+    when 'easy'
+      @score += 1
+    when 'medium'
+      @score += 2
+    when 'hard'
+      @score += 3
+    end
+      @streak += 1
   else
     puts "Wrong!" #play sound, minus life
     @life -= 1
+    @streak = 0
   end
 end
 
 def game_over?
-  if @life == 0
-    puts "You have been defeated!!"
-    false
+  case @life
+  when 2
+    puts ''
+  when 1
+    puts ''
+  when 0
+    puts 'Great, you killed Ratman...'
+    true
   end
+  # if @life == 0
+  #   puts "You have been defeated!!"
+  #   false
+  # end
 
 end
 
@@ -67,7 +86,6 @@ end
 
 def generate_questions(category, difficulty)
   # category, difficulty = get_category_difficulty
-
   questions_array = []
   until questions_array.length == 4
     question = get_question(category, difficulty)
@@ -115,6 +133,7 @@ welcome
 username = get_username
 login(username)
 playing = true
+
 while playing
   main_menu
   input = $stdin.gets.chomp.to_i
@@ -136,7 +155,7 @@ while playing
   end
 end
 
-##BATMAN NEEDS YOUR HELP AGAINST RIDDLER
+##BATMAN NEEDS YOUR HELP AGAINST BIDDLER
 ##TITLE: ORACLE
 
 # welcome, please enter your username
