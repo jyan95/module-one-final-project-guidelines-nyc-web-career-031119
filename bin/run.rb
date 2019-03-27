@@ -49,7 +49,7 @@ def correct?(question, answer)
   end
 end
 
-def game_over?
+def dead?
   case @life
   when 2
     puts ''
@@ -63,7 +63,11 @@ def game_over?
   #   puts "You have been defeated!!"
   #   false
   # end
+end
 
+def game_over
+  @current_player.update_streak(@streak) if @streak > @current_player.streak
+  @current_player.update_high_score(@score) if @score > @current_player.high_score
 end
 
 def start_game
@@ -74,7 +78,7 @@ def start_game
   # binding.pry
   questions = generate_questions(category, difficulty)
   asker(questions)
-
+  game_over
 end
 
 def get_category_difficulty
@@ -122,7 +126,7 @@ def asker(q_array)
       exit
     end
     correct?(q, answer)
-    break if game_over?
+    break if dead?
   end
 end
 

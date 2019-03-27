@@ -3,7 +3,7 @@ class Player < ActiveRecord::Base
   has_many :questions, through: :question_masters
 
   def self.new_user(username)
-    Player.find_or_create_by(username: username)
+    Player.find_or_create_by(username: username, high_score: 0, streak: 0)
   end
 
   def self.validate(username)
@@ -14,6 +14,7 @@ class Player < ActiveRecord::Base
     puts "High Score: #{self.high_score}"
     puts "Questions Answered: #{self.questions_answered}"
     puts "Accuracy: #{self.accuracy}%"
+    puts "Longest Streak: #{self.streak}"
   end
 
   def questions_answered
@@ -32,7 +33,11 @@ class Player < ActiveRecord::Base
     QuestionMaster.forget_questions(self)
   end
 
-  def longest_streak
-    # track longest streak of correct answers
+  def update_streak(new_streak)
+    self.update(streak: new_streak)
+  end
+
+  def update_high_score(new_high_score)
+    self.update(high_score: new_high_score)
   end
 end
