@@ -18,24 +18,28 @@ def reset_game_stats
   @life = 3
 end
 
+def increase_score(question)
+  #increase score!
+  case question["difficulty"]
+  when 'easy'
+    @score += 1
+  when 'medium'
+    @score += 2
+  when 'hard'
+    @score += 3
+  end
+end
+
 def correct?(question, answer)
   qm = QuestionMaster.find_by(question_id: question.id, player_id: @current_player.id)
 
   if question["correct_answer"] == answer
-    puts "u rite..."
+    right_answer
     qm.update_correct(true)
-    #increase score!
-    case question["difficulty"]
-    when 'easy'
-      @score += 1
-    when 'medium'
-      @score += 2
-    when 'hard'
-      @score += 3
-    end
-      @streak += 1
+    increase_score(question)
+    @streak += 1
   else
-    puts "Nice try." #play sound, minus life
+    wrong_answer #play sound, minus life
     qm.update_correct(false)
     @life -= 1
     @streak = 0

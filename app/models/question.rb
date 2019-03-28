@@ -38,7 +38,6 @@ class Question < ActiveRecord::Base
     until questions_array.length == 4
       question = get_question(category, difficulty)
       question["style"] = question.delete("type")
-      binding.pry
       q = self.find_or_create_by(question)
       if !QuestionMaster.validate_question(q, player)
         questions_array << q

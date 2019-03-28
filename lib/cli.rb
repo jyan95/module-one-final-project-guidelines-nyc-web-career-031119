@@ -27,7 +27,6 @@ def get_category_difficulty
   Question.display_categories
   input = get_input_from_player.to_i
   category = Question.get_category_name(input)
-  binding.pry
   clear_console
   puts "Choose a difficulty (leave blank for all)"
   puts '-'*30
@@ -59,4 +58,12 @@ end
 
 def delineate_30
   puts '-'*30
+end
+
+def right_answer
+  puts "u rite..."
+end
+
+def wrong_answer
+  puts "Nice try."
 end
