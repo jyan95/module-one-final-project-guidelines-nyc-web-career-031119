@@ -13,6 +13,6 @@ class QuestionMaster < ActiveRecord::Base
 
   #validate_question methods returns a true / false value
   def self.validate_question(question, current_player)
-    !!QuestionMaster.find_by(question_id: question.id, player_id: current_player.id)
+    !!self.find_by(question_id: question.id, player_id: current_player.id)
   end
 end

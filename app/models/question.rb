@@ -31,7 +31,6 @@ class Question < ActiveRecord::Base
     "Science: Gadgets"=>30,
     "Entertainment: Japanese Anime & Manga"=>31,
     "Entertainment: Cartoon & Animations"=>32,
-    0 => ""
   }
 
   def self.generate_questions(category, difficulty, player)
