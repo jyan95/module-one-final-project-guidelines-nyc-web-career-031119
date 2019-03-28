@@ -8,12 +8,14 @@ def get_username
 end
 
 def main_menu
+  delineate_30
   puts "Here are your options:"
-  puts "1. Start Game"
-  puts "2. Stats"
-  puts "3. Scoreboard"# scoreboard
-  puts "4. Reset Your Questions"
-  puts "5. Exit"
+  puts "1 Start Game"
+  puts "2 Stats"
+  puts "3 Scoreboard"
+  puts "4 Reset Your Questions"
+  puts "5 Exit"
+  delineate_30
   print "Please enter a number: "
 end
 
@@ -66,4 +68,13 @@ end
 
 def wrong_answer
   puts "Nice try."
+end
+
+def exit?(input)
+  # game_over if input == "exit"
+  exit if input == "exit"
+end
+
+def back_to_menu(input)
+  false if input == "m"
 end

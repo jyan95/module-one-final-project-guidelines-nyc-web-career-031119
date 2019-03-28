@@ -1,0 +1,3 @@
+class Classic < Gamemode
+
+end

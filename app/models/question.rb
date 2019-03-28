@@ -35,7 +35,7 @@ class Question < ActiveRecord::Base
 
   def self.generate_questions(category, difficulty, player)
     questions_array = []
-    until questions_array.length == 4
+    until questions_array.length == 10
       question = get_question(category, difficulty)
       question["style"] = question.delete("type")
       q = self.find_or_create_by(question)
@@ -44,6 +44,24 @@ class Question < ActiveRecord::Base
       end
     end
     questions_array
+  end
+
+  def self.quick_question(player)
+    question = get_question()
+    question["style"] = question.delete("type")
+    q = self.find_or_create_by(question)
+    if !QuestionMaster.validate_question(q, player)
+      q
+    end
+  end
+
+  def self.hard_question(player)
+    question = get_question('','hard')
+    question["style"] = question.delete("type")
+    q = self.find_or_create_by(question)
+    if !QuestionMaster.validate_question(q, player)
+      q
+    end
   end
 
   def self.display_categories
@@ -56,7 +74,7 @@ class Question < ActiveRecord::Base
     else
       category_names = []
       @categories.each{|category,id| category_names << category}
-      category_names[num-1]
+      category_names[input-1]
     end
   end
 
@@ -65,7 +83,7 @@ class Question < ActiveRecord::Base
   end
 
   def get_answers()
-    puts "Correct answer is #{self["correct_answer"]}"
+    # puts "Correct answer is #{self["correct_answer"]}"
     answers = []
     answers << self["correct_answer"]
     answers << JSON.parse(self["incorrect_answers"])
