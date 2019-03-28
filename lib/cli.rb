@@ -25,8 +25,9 @@ def get_category_difficulty
   puts "Choose a category #(leave blank for all)"
   puts "-"*30
   Question.display_categories
-  num = $stdin.gets.chomp.to_i
-  category = Question.get_category_name(num)
+  input = get_input_from_player.to_i
+  category = Question.get_category_name(input)
+  binding.pry
   clear_console
   puts "Choose a difficulty (leave blank for all)"
   puts '-'*30

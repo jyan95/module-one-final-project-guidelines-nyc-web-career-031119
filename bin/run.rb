@@ -19,11 +19,11 @@ def reset_game_stats
 end
 
 def correct?(question, answer)
-  q = QuestionMaster.find_by(question_id: question.id, player_id: @current_player.id)
+  qm = QuestionMaster.find_by(question_id: question.id, player_id: @current_player.id)
 
   if question["correct_answer"] == answer
     puts "u rite..."
-    q.update_correct(true)
+    qm.update_correct(true)
     #increase score!
     case question["difficulty"]
     when 'easy'
@@ -36,7 +36,7 @@ def correct?(question, answer)
       @streak += 1
   else
     puts "Nice try." #play sound, minus life
-    q.update_correct(false)
+    qm.update_correct(false)
     @life -= 1
     @streak = 0
   end
@@ -91,43 +91,50 @@ def exit?(input)
   exit if input == "exit"
 end
 
-welcome
-# new_user?
-username = get_username #cli
-login(username)
-reset_game_stats
-playing = true
-
-while playing
-  main_menu
-  input = get_input_from_player.to_i #cli
-  case input
-  when 1
-    clear_console #cli
-    start_game
-  when 2
-    clear_console #cli
-    @current_player.stats
-  when 3
-    clear_console #cli
-    Player.scoreboard
-  when 4
-    warning #cli
-    input = get_input_from_player
-    if input == 'y'
-      @current_player.reset_questions
-      puts '-'*30
-      puts 'your questions have been reset'
-      puts '-'*30
+def play
+  playing = true
+  while playing
+    main_menu
+    input = get_input_from_player.to_i #cli
+    case input
+    when 1
+      clear_console #cli
+      start_game
+    when 2
+      clear_console #cli
+      @current_player.stats
+    when 3
+      clear_console #cli
+      Player.scoreboard
+    when 4
+      warning #cli
+      input = get_input_from_player
+      if input == 'y'
+        @current_player.reset_questions
+        puts '-'*30
+        puts 'your questions have been reset'
+        puts '-'*30
+      end
+    when 5 #exit
+      clear_console #cli
+      cya
+      playing = false
+    else
+      invalid_input
     end
-  when 5 #exit
-    clear_console #cli
-    cya
-    playing = false
-  else
-    invalid_input
   end
 end
+
+def run_game
+  welcome #cli
+  username = get_username #cli
+  login(username)
+  reset_game_stats
+  play
+end
+
+
+run_game
 
 ##ORACLE
 
