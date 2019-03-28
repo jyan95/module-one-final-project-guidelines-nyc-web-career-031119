@@ -104,6 +104,9 @@ def play
     when 1
       clear_console #cli
       start_game
+        # quickplay
+        # normal_mode
+        # sudden_death
     when 2
       clear_console #cli
       @current_player.stats
@@ -134,6 +137,7 @@ def run_game
   username = get_username #cli
   login(username)
   reset_game_stats
+
   play
 end
 

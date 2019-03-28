@@ -56,7 +56,7 @@ class Question < ActiveRecord::Base
     else
       category_names = []
       @categories.each{|category,id| category_names << category}
-      category_names[num-1]
+      category_names[input-1]
     end
   end
 

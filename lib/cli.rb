@@ -11,7 +11,7 @@ def main_menu
   puts "Here are your options:"
   puts "1. Start Game"
   puts "2. Stats"
-  puts "3. Scoreboard"# scoreboard
+  puts "3. Scoreboard"
   puts "4. Reset Your Questions"
   puts "5. Exit"
   print "Please enter a number: "
