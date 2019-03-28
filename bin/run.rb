@@ -4,6 +4,7 @@ require_relative '../config/environment'
 def login(username)
   player = Player.validate(username)
   if player
+    clear_console
     puts "Here to try your luck again, #{player.username}...?"
   else
     player = Player.new_user(username)
@@ -67,24 +68,24 @@ end
 #   @current_player.update_high_score(@score) if @score > @current_player.high_score
 # end
 
-# def start_game #classic
-#   gamemode = Classic.new(@current_player)
-#   gamemode.reset_game_stats
-#   # puts "Choose a category"
-#   category, difficulty = get_category_difficulty
-#   questions = Question.generate_questions(category, difficulty, @current_player)
-#   gamemode.asker(questions)
-#   gamemode.game_over
-# end
+def classic
+  gamemode = Classic.new(@current_player)
+  gamemode.reset_game_stats
+  # puts "Choose a category"
+  category, difficulty = get_category_difficulty
+  questions = Question.generate_questions(category, difficulty, @current_player)
+  gamemode.asker(questions)
+  gamemode.game_over
+end
 
-# def quickplay
-#   gamemode = Quickplay.new(@current_player)
-#   gamemode.reset_game_stats
-#   gamemode.asker
-#   gamemode.game_over
-# end
+def quickplay
+  gamemode = Quickplay.new(@current_player)
+  gamemode.reset_game_stats
+  gamemode.asker
+  gamemode.game_over
+end
 
-def start_game #sudden_death
+def sudden_death
   gamemode = Suddendeath.new(@current_player)
   gamemode.reset_game_stats
   gamemode.asker
@@ -131,7 +132,8 @@ def play
     case input
     when 1
       clear_console #cli
-      start_game
+      choose_mode
+      # start_game
         # quickplay
         # normal_mode
         # sudden_death
@@ -160,14 +162,29 @@ def play
   end
 end
 
+def choose_mode
+  puts 'Choose Mode:'
+  delineate_30
+  puts '1 Quickplay - #info'
+  puts '2 Classic - #info'
+  puts '3 Sudden Death - #info'
+  input = get_input_from_player.to_i
+  case input
+  when 1
+    quickplay
+  when 2
+    classic
+  when 3
+    sudden_death
+  end
+end
+
 def run_game
   welcome #cli
   username = get_username #cli
   login(username)
-  # reset_game_stats
   play
 end
-
 
 run_game
 

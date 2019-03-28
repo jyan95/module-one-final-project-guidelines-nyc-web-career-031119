@@ -10,8 +10,8 @@ class Gamemode
   end
 
   def asker(q_array)
-    puts "Current HP: #{@life}"
     q_array.each do |q|
+      break if dead?
       delineate_30
       puts "Category: #{q["category"]}"
       puts q["question"]
@@ -24,7 +24,7 @@ class Gamemode
       answer = answers[input.to_i-1]
       clear_console
       correct?(q, answer)
-      break if dead?
+      # break if dead?
     end
   end
 
