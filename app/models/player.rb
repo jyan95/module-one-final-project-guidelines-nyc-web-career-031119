@@ -11,13 +11,13 @@ class Player < ActiveRecord::Base
   end
 
   def stats
-    puts "-"*30
+    delineate_30
     puts "Showing Stats for #{self.username}"
     puts "High Score: #{self.high_score}"
     puts "Questions Answered: #{self.questions_answered}"
     puts "Accuracy: #{self.accuracy}%"
     puts "Longest Streak: #{self.streak}"
-    puts "-"*30
+    delineate_30
   end
 
   def questions_answered
@@ -27,8 +27,8 @@ class Player < ActiveRecord::Base
 
   def accuracy
     #SUM(right) / SUM(wrong) FROM QM where user_id = self.id
-    correctness = self.question_masters.where("correct = ?", true).length / questions_answered.to_f
-    if correctness.class == "Integer"
+    correctness = self.question_masters.where("correct = ?", true).length / self.questions_answered.to_f
+    if correctness > 0
       (correctness*100).round(2)
     else
       0.00
@@ -36,7 +36,6 @@ class Player < ActiveRecord::Base
   end
 
   def reset_questions
-    #  delete from db?
     QuestionMaster.forget_questions(self)
   end
 
@@ -50,8 +49,9 @@ class Player < ActiveRecord::Base
 
   def self.scoreboard
     puts "HIGHSCORES"
+    delineate_30
     sorted = self.order(high_score: :desc)
     sorted[0..5].each{|player| puts "#{player.username}: #{player.high_score}"}
-    puts '-'*30
+    delineate_30
   end
 end

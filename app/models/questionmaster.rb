@@ -10,4 +10,9 @@ class QuestionMaster < ActiveRecord::Base
   def update_correct(bool)
     self.update(correct: bool)
   end
+
+  #validate_question methods returns a true / false value
+  def self.validate_question(question, current_player)
+    !!self.find_by(question_id: question.id, player_id: current_player.id)
+  end
 end

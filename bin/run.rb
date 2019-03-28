@@ -1,5 +1,4 @@
 require_relative '../config/environment'
-require 'json'
 
 
 def login(username)
@@ -11,40 +10,37 @@ def login(username)
     puts "Welcome to my game, #{player.username}!"
   end
   @current_player = player
+end
+
+def reset_game_stats
   @score = 0
   @streak = 0
   @life = 3
 end
 
-def main_menu
-  puts "Here are your options:"
-  puts "1. Start Game"
-  puts "2. Stats"
-  puts "3. Scoreboard"# scoreboard
-  puts "4. Reset Your Questions"
-  puts "5. Exit"
-  print "Please enter a number: "
+def increase_score(question)
+  #increase score!
+  case question["difficulty"]
+  when 'easy'
+    @score += 1
+  when 'medium'
+    @score += 2
+  when 'hard'
+    @score += 3
+  end
 end
 
 def correct?(question, answer)
-  q = QuestionMaster.find_by(question_id: question.id, player_id: @current_player.id)
+  qm = QuestionMaster.find_by(question_id: question.id, player_id: @current_player.id)
 
   if question["correct_answer"] == answer
-    puts "u rite..."
-    q.update_correct(true)
-    #increase score!
-    case question["difficulty"]
-    when 'easy'
-      @score += 1
-    when 'medium'
-      @score += 2
-    when 'hard'
-      @score += 3
-    end
-      @streak += 1
+    right_answer
+    qm.update_correct(true)
+    increase_score(question)
+    @streak += 1
   else
-    puts "Nice try." #play sound, minus life
-    q.update_correct(false)
+    wrong_answer #play sound, minus life
+    qm.update_correct(false)
     @life -= 1
     @streak = 0
   end
@@ -62,10 +58,6 @@ def dead?
     puts 'You are dead.'
     true
   end
-  # if @life == 0
-  #   puts "You have been defeated!!"
-  #   false
-  # end
 end
 
 def game_over
@@ -76,75 +68,22 @@ end
 def start_game
   # puts "Choose a category"
   category, difficulty = get_category_difficulty
-  # question = get_random_question_from_api
-  # question = get_question(category, difficulty)
-  # binding.pry
-  questions = generate_questions(category, difficulty)
+  questions = Question.generate_questions(category, difficulty, @current_player)
   asker(questions)
   game_over
 end
 
-def get_category_difficulty
-  puts "Choose a category #(leave blank for all)"
-  puts "-"*30
-  Question.display_categories
-  num = $stdin.gets.chomp.to_i
-  category = Question.get_category_name(num)
-  clear_console
-  puts "Choose a difficulty (leave blank for all)"
-  puts '-'*30
-  Question.display_difficulty
-  difficulty = $stdin.gets.chomp.downcase
-  clear_console
-  return category, difficulty
-end
-
-def generate_questions(category, difficulty)
-  # category, difficulty = get_category_difficulty
-  questions_array = []
-  until questions_array.length == 4
-    question = get_question(category, difficulty)
-    question["style"] = question.delete("type")
-    # binding.pry
-    q = Question.find_or_create_by(question)
-    if !validate_question(q)
-      questions_array << q
-    end
-  end
-  questions_array
-end
-
-#validate_question methods returns a true / false value
-def validate_question(question)# current_player)
-  !!QuestionMaster.find_by(question_id: question.id, player_id: @current_player.id)
-end
-
-def get_answers(q)
-  puts "Correct answer is #{q["correct_answer"]}"
-  answers = []
-  answers << q["correct_answer"]
-  answers << JSON.parse(q["incorrect_answers"])
-  answers.flatten.shuffle
-end
-
 def asker(q_array)
-  # binding.pry
   q_array.each do |q|
-    puts "-"*25
+    delineate_30
     puts "Category: #{q["category"]}"
     puts q["question"]
-    answers = get_answers(q)
+    answers = q.get_answers
     answers.each_with_index{|a,i| puts "#{i+1} #{a}"}
-    # puts q["question"]
-    # puts q["correct_answer"]
-    # JSON.parse(q["incorrect_answers"]).each do |answer|
-    #   puts answer
-    # end
+
     QuestionMaster.create(question_id: q.id, player_id: @current_player.id)
-    input = $stdin.gets.chomp.downcase
-    if input == "exit"
-      exit
-    end
+    input = get_input_from_player
+    exit?(input)
     answer = answers[input.to_i-1]
     clear_console
     correct?(q, answer)
@@ -152,49 +91,54 @@ def asker(q_array)
   end
 end
 
-def asked?(q)
-
+def exit?(input)
+  exit if input == "exit"
 end
 
-
-welcome
-# new_user?
-username = get_username
-login(username)
-playing = true
-
-while playing
-  main_menu
-  input = $stdin.gets.chomp.to_i
-  case input
-  when 1
-    clear_console
-    start_game
-  when 2
-    clear_console
-    @current_player.stats
-  when 3
-    clear_console
-    Player.scoreboard
-    # binding.pry
-  when 4
-    puts "Are you sure? (y/n)"
-    input = $stdin.gets.chomp
-    if input == 'y'
-      @current_player.reset_questions
-      puts '-'*30
-      puts 'your questions have been reset'
-      puts '-'*30
+def play
+  playing = true
+  while playing
+    main_menu
+    input = get_input_from_player.to_i #cli
+    case input
+    when 1
+      clear_console #cli
+      start_game
+    when 2
+      clear_console #cli
+      @current_player.stats
+    when 3
+      clear_console #cli
+      Player.scoreboard
+    when 4
+      warning #cli
+      input = get_input_from_player
+      if input == 'y'
+        @current_player.reset_questions
+        delineate_30
+        puts 'your questions have been reset'
+        delineate_30
+      end
+    when 5 #exit
+      clear_console #cli
+      cya
+      playing = false
+    else
+      invalid_input
     end
-  when 5
-    clear_console
-    puts "Cy@"
-    playing = false
-    # exit
-  else
-    puts "Please enter a valid number"
   end
 end
+
+def run_game
+  welcome #cli
+  username = get_username #cli
+  login(username)
+  reset_game_stats
+  play
+end
+
+
+run_game
 
 ##ORACLE
 
