@@ -12,39 +12,39 @@ def login(username)
   @current_player = player
 end
 
-def reset_game_stats
-  @score = 0
-  @streak = 0
-  @life = 3
-end
+# def reset_game_stats
+#   @score = 0
+#   @streak = 0
+#   @life = 3
+# end
 
-def increase_score(question)
-  #increase score!
-  case question["difficulty"]
-  when 'easy'
-    @score += 1
-  when 'medium'
-    @score += 2
-  when 'hard'
-    @score += 3
-  end
-end
+# def increase_score(question)
+#   #increase score!
+#   case question["difficulty"]
+#   when 'easy'
+#     @score += 1
+#   when 'medium'
+#     @score += 2
+#   when 'hard'
+#     @score += 3
+#   end
+# end
 
-def correct?(question, answer)
-  qm = QuestionMaster.find_by(question_id: question.id, player_id: @current_player.id)
-
-  if question["correct_answer"] == answer
-    right_answer
-    qm.update_correct(true)
-    increase_score(question)
-    @streak += 1
-  else
-    wrong_answer #play sound, minus life
-    qm.update_correct(false)
-    @life -= 1
-    @streak = 0
-  end
-end
+# def correct?(question, answer)
+#   qm = QuestionMaster.find_by(question_id: question.id, player_id: @current_player.id)
+#
+#   if question["correct_answer"] == answer
+#     right_answer
+#     qm.update_correct(true)
+#     increase_score(question)
+#     @streak += 1
+#   else
+#     wrong_answer #play sound, minus life
+#     qm.update_correct(false)
+#     @life -= 1
+#     @streak = 0
+#   end
+# end
 
 def dead?
   case @life
@@ -60,40 +60,59 @@ def dead?
   end
 end
 
-def game_over
-  @current_player.update_streak(@streak) if @streak > @current_player.streak
-  @current_player.update_high_score(@score) if @score > @current_player.high_score
-end
+# def game_over
+#   @current_player.update_streak(@streak) if @streak > @current_player.streak
+#   @current_player.update_high_score(@score) if @score > @current_player.high_score
+# end
 
-def start_game
+def start_game #classic
+  gamemode = Classic.new(@current_player)
+  gamemode.reset_game_stats
   # puts "Choose a category"
   category, difficulty = get_category_difficulty
   questions = Question.generate_questions(category, difficulty, @current_player)
-  asker(questions)
-  game_over
+  gamemode.asker(questions)
+  gamemode.game_over
 end
 
-def asker(q_array)
-  q_array.each do |q|
-    delineate_30
-    puts "Category: #{q["category"]}"
-    puts q["question"]
-    answers = q.get_answers
-    answers.each_with_index{|a,i| puts "#{i+1} #{a}"}
+# def quickplay
+#   gamemode = Quickplay.new(@current_player)
+#   gamemode.reset_game_stats
+#   gamemode.asker
+#   gamemode.game_over
+# end
 
-    QuestionMaster.create(question_id: q.id, player_id: @current_player.id)
-    input = get_input_from_player
-    exit?(input)
-    answer = answers[input.to_i-1]
-    clear_console
-    correct?(q, answer)
-    break if dead?
-  end
-end
+# def start_game
+#   gamemode = Classic.new(@current_player)
+#   gamemode.reset_game_stats
+#   # puts "Choose a category"
+#   category, difficulty = get_category_difficulty
+#   questions = Question.generate_questions(category, difficulty, @current_player)
+#   gamemode.asker(questions)
+#   gamemode.game_over
+# end
 
-def exit?(input)
-  exit if input == "exit"
-end
+# def asker(q_array)
+#   q_array.each do |q|
+#     delineate_30
+#     puts "Category: #{q["category"]}"
+#     puts q["question"]
+#     answers = q.get_answers
+#     answers.each_with_index{|a,i| puts "#{i+1} #{a}"}
+#
+#     QuestionMaster.create(question_id: q.id, player_id: @current_player.id)
+#     input = get_input_from_player
+#     exit?(input)
+#     answer = answers[input.to_i-1]
+#     clear_console
+#     correct?(q, answer)
+#     break if dead?
+#   end
+# end
+
+# def exit?(input)
+#   exit if input == "exit"
+# end
 
 def play
   playing = true
@@ -136,8 +155,7 @@ def run_game
   welcome #cli
   username = get_username #cli
   login(username)
-  reset_game_stats
-
+  # reset_game_stats
   play
 end
 

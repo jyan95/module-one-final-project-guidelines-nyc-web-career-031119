@@ -67,3 +67,12 @@ end
 def wrong_answer
   puts "Nice try."
 end
+
+def exit?(input)
+  # game_over if input == "exit"
+  exit if input == "exit"
+end
+
+def back_to_menu(input)
+  false if input == "m"
+end
