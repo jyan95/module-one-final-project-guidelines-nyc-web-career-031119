@@ -69,6 +69,7 @@ end
 # end
 
 def classic
+  clear_console
   gamemode = Classic.new(@current_player)
   gamemode.reset_game_stats
   # puts "Choose a category"
@@ -79,6 +80,7 @@ def classic
 end
 
 def quickplay
+  clear_console
   gamemode = Quickplay.new(@current_player)
   gamemode.reset_game_stats
   gamemode.asker
@@ -86,6 +88,7 @@ def quickplay
 end
 
 def sudden_death
+  clear_console
   gamemode = Suddendeath.new(@current_player)
   gamemode.reset_game_stats
   gamemode.asker
@@ -127,6 +130,7 @@ end
 def play
   playing = true
   while playing
+    clear_console
     main_menu
     input = get_input_from_player.to_i #cli
     case input
@@ -176,6 +180,9 @@ def choose_mode
     classic
   when 3
     sudden_death
+  else
+    invalid_input
+    choose_mode
   end
 end
 
