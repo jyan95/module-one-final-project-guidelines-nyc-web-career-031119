@@ -55,6 +55,15 @@ class Question < ActiveRecord::Base
     end
   end
 
+  def self.hard_question(player)
+    question = get_question('','hard')
+    question["style"] = question.delete("type")
+    q = self.find_or_create_by(question)
+    if !QuestionMaster.validate_question(q, player)
+      q
+    end
+  end
+
   def self.display_categories
     @categories.each_with_index { |(category,value), i| puts "#{i+1} #{category}"}
   end

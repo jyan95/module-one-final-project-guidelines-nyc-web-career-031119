@@ -67,15 +67,15 @@ end
 #   @current_player.update_high_score(@score) if @score > @current_player.high_score
 # end
 
-def start_game #classic
-  gamemode = Classic.new(@current_player)
-  gamemode.reset_game_stats
-  # puts "Choose a category"
-  category, difficulty = get_category_difficulty
-  questions = Question.generate_questions(category, difficulty, @current_player)
-  gamemode.asker(questions)
-  gamemode.game_over
-end
+# def start_game #classic
+#   gamemode = Classic.new(@current_player)
+#   gamemode.reset_game_stats
+#   # puts "Choose a category"
+#   category, difficulty = get_category_difficulty
+#   questions = Question.generate_questions(category, difficulty, @current_player)
+#   gamemode.asker(questions)
+#   gamemode.game_over
+# end
 
 # def quickplay
 #   gamemode = Quickplay.new(@current_player)
@@ -83,6 +83,13 @@ end
 #   gamemode.asker
 #   gamemode.game_over
 # end
+
+def start_game #sudden_death
+  gamemode = Suddendeath.new(@current_player)
+  gamemode.reset_game_stats
+  gamemode.asker
+  gamemode.game_over
+end
 
 # def start_game
 #   gamemode = Classic.new(@current_player)
