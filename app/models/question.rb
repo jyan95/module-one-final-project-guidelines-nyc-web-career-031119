@@ -47,4 +47,12 @@ class Question < ActiveRecord::Base
     puts "Easy \t Medium \t Hard"
   end
 
+  def get_answers()
+    puts "Correct answer is #{self["correct_answer"]}"
+    answers = []
+    answers << self["correct_answer"]
+    answers << JSON.parse(self["incorrect_answers"])
+    answers.flatten.shuffle
+  end
+
 end

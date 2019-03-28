@@ -1,5 +1,5 @@
 require_relative '../config/environment'
-require 'json'
+# require 'json'
 
 
 def login(username)
@@ -16,15 +16,7 @@ def login(username)
   @life = 3
 end
 
-def main_menu
-  puts "Here are your options:"
-  puts "1. Start Game"
-  puts "2. Stats"
-  puts "3. Scoreboard"# scoreboard
-  puts "4. Reset Your Questions"
-  puts "5. Exit"
-  print "Please enter a number: "
-end
+
 
 def correct?(question, answer)
   q = QuestionMaster.find_by(question_id: question.id, player_id: @current_player.id)
@@ -62,10 +54,6 @@ def dead?
     puts 'You are dead.'
     true
   end
-  # if @life == 0
-  #   puts "You have been defeated!!"
-  #   false
-  # end
 end
 
 def game_over
@@ -119,21 +107,13 @@ def validate_question(question)# current_player)
   !!QuestionMaster.find_by(question_id: question.id, player_id: @current_player.id)
 end
 
-def get_answers(q)
-  puts "Correct answer is #{q["correct_answer"]}"
-  answers = []
-  answers << q["correct_answer"]
-  answers << JSON.parse(q["incorrect_answers"])
-  answers.flatten.shuffle
-end
-
 def asker(q_array)
   # binding.pry
   q_array.each do |q|
     puts "-"*25
     puts "Category: #{q["category"]}"
     puts q["question"]
-    answers = get_answers(q)
+    answers = q.get_answers
     answers.each_with_index{|a,i| puts "#{i+1} #{a}"}
     # puts q["question"]
     # puts q["correct_answer"]
@@ -141,7 +121,7 @@ def asker(q_array)
     #   puts answer
     # end
     QuestionMaster.create(question_id: q.id, player_id: @current_player.id)
-    input = $stdin.gets.chomp.downcase
+    input = get_input_from_player
     if input == "exit"
       exit
     end
@@ -159,27 +139,27 @@ end
 
 welcome
 # new_user?
-username = get_username
+username = get_username #cli
 login(username)
 playing = true
 
 while playing
   main_menu
-  input = $stdin.gets.chomp.to_i
+  input = get_input_from_player.to_i #cli
   case input
   when 1
-    clear_console
+    clear_console #cli
     start_game
   when 2
-    clear_console
+    clear_console #cli
     @current_player.stats
   when 3
-    clear_console
+    clear_console #cli
     Player.scoreboard
     # binding.pry
   when 4
-    puts "Are you sure? (y/n)"
-    input = $stdin.gets.chomp
+    warning #cli
+    input = get_input_from_player
     if input == 'y'
       @current_player.reset_questions
       puts '-'*30
@@ -187,12 +167,12 @@ while playing
       puts '-'*30
     end
   when 5
-    clear_console
-    puts "Cy@"
+    clear_console #cli
+    cya
     playing = false
     # exit
   else
-    puts "Please enter a valid number"
+    invalid_input
   end
 end
 
