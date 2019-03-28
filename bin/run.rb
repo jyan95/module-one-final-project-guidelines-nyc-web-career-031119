@@ -2,9 +2,9 @@ require_relative '../config/environment'
 
 
 def login(username)
+  clear_console
   player = Player.validate(username)
   if player
-    clear_console
     puts "Here to try your luck again, #{player.username}...?"
   else
     player = Player.new_user(username)
@@ -130,7 +130,6 @@ end
 def play
   playing = true
   while playing
-    clear_console
     main_menu
     input = get_input_from_player.to_i #cli
     case input
@@ -169,9 +168,9 @@ end
 def choose_mode
   puts 'Choose Mode:'
   delineate_30
-  puts '1 Quickplay - #info'
-  puts '2 Classic - #info'
-  puts '3 Sudden Death - #info'
+  puts "1 Quickplay - Hone your skills. \n(category:all, difficulty:all, 'm'-main menu, 'exit'-quit game)"
+  puts "\n2 Classic - Play for your freedom! But every question you get wrong brings you closer to your Demise. \n(category:choose, difficulty:choose, 'exit'-quit game)"
+  puts "\n3 Sudden Death - Make it out alive and I'll give you 1 Million Dollars. Just don't make any mistakes... \n(category:all, difficulty:hard, 'm'-main menu, 'exit'-quit game)"
   input = get_input_from_player.to_i
   case input
   when 1
