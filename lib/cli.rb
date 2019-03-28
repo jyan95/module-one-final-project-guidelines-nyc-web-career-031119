@@ -12,11 +12,11 @@ end
 def main_menu
   delineate_30
   puts "Here are your options:"
-  puts "1 Start Game"
-  puts "2 Stats"
-  puts "3 Scoreboard"
-  puts "4 Reset Your Questions"
-  puts "5 Exit"
+  puts "\n1 Start Game"
+  puts "\n2 Stats"
+  puts "\n3 Scoreboard"
+  puts "\n4 Reset Your Questions"
+  puts "\n5 Exit"
   delineate_30
   print "Pick a number: "
 end
@@ -89,7 +89,11 @@ end
 
 def exit?(input)
   # game_over if input == "exit"
-  exit if input == "exit"
+  if input == "exit"
+    clear_console
+    cya
+    exit
+  end
 end
 
 def back_to_menu(input)

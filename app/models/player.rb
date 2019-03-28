@@ -17,7 +17,6 @@ class Player < ActiveRecord::Base
     puts "Questions Answered: #{self.questions_answered}"
     puts "Accuracy: #{self.accuracy}%"
     puts "Longest Streak: #{self.streak}"
-    delineate_30
   end
 
   def questions_answered
@@ -52,6 +51,5 @@ class Player < ActiveRecord::Base
     delineate_30
     sorted = self.order(high_score: :desc)
     sorted[0..5].each{|player| puts "#{player.username}: #{player.high_score}"}
-    delineate_30
   end
 end

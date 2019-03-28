@@ -58,7 +58,6 @@ def dead?
   when 0
     puts 'Health: [- - -]'
     puts 'You are dead.'
-    delineate_30
     true
   end
 end

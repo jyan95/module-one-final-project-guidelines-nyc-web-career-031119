@@ -12,7 +12,11 @@ class Suddendeath < Gamemode
       QuestionMaster.create(question_id: q.id, player_id: @current_player.id)
       input = get_input_from_player
       exit?(input)
-      break if input == "m"
+      if input == "m"
+        clear_console
+        puts "I guess you don't like money..."
+        break
+      end
       answer = answers[input.to_i-1]
       clear_console
       correct?(q, answer)
@@ -24,5 +28,10 @@ class Suddendeath < Gamemode
     @score = 0
     @streak = 0
     @life = 1
+  end
+
+  def game_over
+    super
+    puts "\nYou never stood a chance." if @life == 0
   end
 end
