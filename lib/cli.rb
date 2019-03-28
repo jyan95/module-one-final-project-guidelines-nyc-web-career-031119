@@ -3,7 +3,7 @@ def welcome
 end
 
 def get_username
-  puts "please enter your username"
+  print "please enter your username: "
   username = $stdin.gets.chomp.downcase
 end
 
@@ -55,4 +55,8 @@ end
 
 def cya
   puts "Cy@"
+end
+
+def delineate_30
+  puts '-'*30
 end

@@ -11,13 +11,13 @@ class Player < ActiveRecord::Base
   end
 
   def stats
-    puts "-"*30
+    delineate_30
     puts "Showing Stats for #{self.username}"
     puts "High Score: #{self.high_score}"
     puts "Questions Answered: #{self.questions_answered}"
     puts "Accuracy: #{self.accuracy}%"
     puts "Longest Streak: #{self.streak}"
-    puts "-"*30
+    delineate_30
   end
 
   def questions_answered
@@ -50,8 +50,9 @@ class Player < ActiveRecord::Base
 
   def self.scoreboard
     puts "HIGHSCORES"
+    delineate_30
     sorted = self.order(high_score: :desc)
     sorted[0..5].each{|player| puts "#{player.username}: #{player.high_score}"}
-    puts '-'*30
+    delineate_30
   end
 end

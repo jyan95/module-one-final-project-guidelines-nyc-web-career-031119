@@ -71,7 +71,7 @@ end
 
 def asker(q_array)
   q_array.each do |q|
-    puts "-"*25
+    delineate_30
     puts "Category: #{q["category"]}"
     puts q["question"]
     answers = q.get_answers
@@ -111,9 +111,9 @@ def play
       input = get_input_from_player
       if input == 'y'
         @current_player.reset_questions
-        puts '-'*30
+        delineate_30
         puts 'your questions have been reset'
-        puts '-'*30
+        delineate_30
       end
     when 5 #exit
       clear_console #cli
