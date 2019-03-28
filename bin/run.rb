@@ -170,6 +170,7 @@ def choose_mode
   puts "1 Quickplay - Hone your skills. \n(category:all, difficulty:all, 'm'-main menu, 'exit'-quit game)"
   puts "\n2 Classic - Play for your freedom! But every question you get wrong brings you closer to your Demise. \n(category:choose, difficulty:choose, 'exit'-quit game)"
   puts "\n3 Sudden Death - Make it out alive and I'll give you 1 Million Dollars. Just don't make any mistakes... \n(category:all, difficulty:hard, 'm'-main menu, 'exit'-quit game)"
+  print "\nPick a number > "
   input = get_input_from_player.to_i
   case input
   when 1
@@ -186,8 +187,10 @@ end
 
 def run_game
   welcome #cli
+  sleep(1)
   username = get_username #cli
   login(username)
+  sleep(1)
   play
 end
 

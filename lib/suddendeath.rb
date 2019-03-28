@@ -10,6 +10,7 @@ class Suddendeath < Gamemode
       answers.each_with_index{|a,i| puts "#{i+1} #{a}"}
 
       QuestionMaster.create(question_id: q.id, player_id: @current_player.id)
+      print "\n> "
       input = get_input_from_player
       exit?(input)
       if input == "m"

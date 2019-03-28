@@ -83,7 +83,8 @@ class Question < ActiveRecord::Base
   end
 
   def get_answers()
-    puts "Correct answer is #{self["correct_answer"]}"
+    # puts "Correct answer is #{self["correct_answer"]}"
+    puts 
     answers = []
     answers << self["correct_answer"]
     answers << JSON.parse(self["incorrect_answers"])
