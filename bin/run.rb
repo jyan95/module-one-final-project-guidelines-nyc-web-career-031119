@@ -50,13 +50,13 @@ end
 def dead?
   case @life
   when 3
-    puts "Current HP: 3"
+    puts "Health: [* * *]"
   when 2
-    puts "Current HP: 2"
+    puts "Health: [* * -]"
   when 1
-    puts "Current HP: 1"
+    puts "Health: [* - -]"
   when 0
-    puts 'Current HP: 0'
+    puts 'Health: [- - -]'
     puts 'You are dead.'
     delineate_30
     true
