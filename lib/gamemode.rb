@@ -10,6 +10,7 @@ class Gamemode
   end
 
   def asker(q_array)
+    puts "Current HP: #{@life}"
     q_array.each do |q|
       delineate_30
       puts "Category: #{q["category"]}"

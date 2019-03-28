@@ -55,7 +55,9 @@ def dead?
   when 1
     puts "Current HP: 1"
   when 0
+    puts 'Current HP: 0'
     puts 'You are dead.'
+    delineate_30
     true
   end
 end
