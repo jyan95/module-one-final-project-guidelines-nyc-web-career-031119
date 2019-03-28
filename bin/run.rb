@@ -1,5 +1,4 @@
 require_relative '../config/environment'
-# require 'json'
 
 
 def login(username)
@@ -11,12 +10,13 @@ def login(username)
     puts "Welcome to my game, #{player.username}!"
   end
   @current_player = player
+end
+
+def reset_game_stats
   @score = 0
   @streak = 0
   @life = 3
 end
-
-
 
 def correct?(question, answer)
   q = QuestionMaster.find_by(question_id: question.id, player_id: @current_player.id)
@@ -64,27 +64,19 @@ end
 def start_game
   # puts "Choose a category"
   category, difficulty = get_category_difficulty
-  # question = get_random_question_from_api
-  # question = get_question(category, difficulty)
-  # binding.pry
   questions = Question.generate_questions(category, difficulty, @current_player)
   asker(questions)
   game_over
 end
 
 def asker(q_array)
-  # binding.pry
   q_array.each do |q|
     puts "-"*25
     puts "Category: #{q["category"]}"
     puts q["question"]
     answers = q.get_answers
     answers.each_with_index{|a,i| puts "#{i+1} #{a}"}
-    # puts q["question"]
-    # puts q["correct_answer"]
-    # JSON.parse(q["incorrect_answers"]).each do |answer|
-    #   puts answer
-    # end
+
     QuestionMaster.create(question_id: q.id, player_id: @current_player.id)
     input = get_input_from_player
     exit?(input)
@@ -103,6 +95,7 @@ welcome
 # new_user?
 username = get_username #cli
 login(username)
+reset_game_stats
 playing = true
 
 while playing
@@ -118,7 +111,6 @@ while playing
   when 3
     clear_console #cli
     Player.scoreboard
-    # binding.pry
   when 4
     warning #cli
     input = get_input_from_player
@@ -128,11 +120,10 @@ while playing
       puts 'your questions have been reset'
       puts '-'*30
     end
-  when 5
+  when 5 #exit
     clear_console #cli
     cya
     playing = false
-    # exit
   else
     invalid_input
   end
