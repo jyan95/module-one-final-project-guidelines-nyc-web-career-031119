@@ -8,7 +8,13 @@ def get_username
   puts "\nTell the console your username."
   sleep(0.7)
   print "Enter your username > "
-  username = $stdin.gets.chomp.downcase
+  input = $stdin.gets.chomp.downcase
+  if input.length < 1
+    invalid_input
+    get_username
+  else
+    username = input
+  end
 end
 
 def main_menu
@@ -34,24 +40,79 @@ def prompt
   puts "Here are your options:"
 end
 
-def get_category_difficulty
+def get_category
   puts "Choose a category (leave blank for all)"
   puts "-"*30
   Question.display_categories
   puts
   print "Pick a number > "
   input = get_input_from_player.to_i
-  category = Question.get_category_name(input)
-  clear_console
+  if input < 0 || input > 24 ||
+    invalid_input
+    get_category
+  else
+    category = Question.get_category_name(input)
+    category
+  end
+end
+
+def get_difficulty
   puts "Choose a difficulty (leave blank for all)"
   puts '-'*30
   Question.display_difficulty
   puts
   print "Difficulty > "
-  difficulty = get_input_from_player
+  input = get_input_from_player.to_i
+  case input
+  when 1
+    difficulty = 'easy'
+  when 2
+    difficulty = 'medium'
+  when 3
+    difficulty = 'hard'
+  else
+    invalid_input
+    get_difficulty
+  end
+  difficulty
+end
+
+def get_category_difficulty
+  category = get_category
+  clear_console
+  difficulty = get_difficulty
   clear_console
   return category, difficulty
 end
+
+# def get_category_difficulty
+#   puts "Choose a category (leave blank for all)"
+#   puts "-"*30
+#   Question.display_categories
+#   puts
+#   print "Pick a number > "
+#   input = get_input_from_player.to_i
+#   category = Question.get_category_name(input)
+#   clear_console
+#   puts "Choose a difficulty (leave blank for all)"
+#   puts '-'*30
+#   Question.display_difficulty
+#   puts
+#   print "Difficulty > "
+#   input = get_input_from_player.to_i
+#   case input
+#   when 1
+#     difficulty = 'easy'
+#   when 2
+#     difficulty = 'medium'
+#   when 3
+#     difficulty = 'hard'
+#   else
+#     get_category_difficulty
+#   end
+#   clear_console
+#   return category, difficulty
+# end
 
 def clear_console
   system('clear')
@@ -62,7 +123,9 @@ def get_input_from_player
 end
 
 def invalid_input
+  clear_console
   puts "Valid number..please."
+  puts
 end
 
 def warning

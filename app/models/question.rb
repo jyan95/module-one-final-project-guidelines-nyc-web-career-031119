@@ -79,7 +79,7 @@ class Question < ActiveRecord::Base
   end
 
   def self.display_difficulty
-    puts "Easy \t Medium \t Hard"
+    puts "1 Easy\n2 Medium\n3 Hard"
   end
 
   def get_answers()
