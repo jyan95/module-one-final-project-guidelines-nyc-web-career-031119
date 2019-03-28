@@ -21,6 +21,21 @@ def prompt
   puts "here are your options"
 end
 
+def get_category_difficulty
+  puts "Choose a category #(leave blank for all)"
+  puts "-"*30
+  Question.display_categories
+  num = $stdin.gets.chomp.to_i
+  category = Question.get_category_name(num)
+  clear_console
+  puts "Choose a difficulty (leave blank for all)"
+  puts '-'*30
+  Question.display_difficulty
+  difficulty = $stdin.gets.chomp.downcase
+  clear_console
+  return category, difficulty
+end
+
 def clear_console
   system('clear')
 end

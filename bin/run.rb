@@ -67,44 +67,9 @@ def start_game
   # question = get_random_question_from_api
   # question = get_question(category, difficulty)
   # binding.pry
-  questions = generate_questions(category, difficulty)
+  questions = Question.generate_questions(category, difficulty, @current_player)
   asker(questions)
   game_over
-end
-
-def get_category_difficulty
-  puts "Choose a category #(leave blank for all)"
-  puts "-"*30
-  Question.display_categories
-  num = $stdin.gets.chomp.to_i
-  category = Question.get_category_name(num)
-  clear_console
-  puts "Choose a difficulty (leave blank for all)"
-  puts '-'*30
-  Question.display_difficulty
-  difficulty = $stdin.gets.chomp.downcase
-  clear_console
-  return category, difficulty
-end
-
-def generate_questions(category, difficulty)
-  # category, difficulty = get_category_difficulty
-  questions_array = []
-  until questions_array.length == 4
-    question = get_question(category, difficulty)
-    question["style"] = question.delete("type")
-    # binding.pry
-    q = Question.find_or_create_by(question)
-    if !validate_question(q)
-      questions_array << q
-    end
-  end
-  questions_array
-end
-
-#validate_question methods returns a true / false value
-def validate_question(question)# current_player)
-  !!QuestionMaster.find_by(question_id: question.id, player_id: @current_player.id)
 end
 
 def asker(q_array)
@@ -122,9 +87,7 @@ def asker(q_array)
     # end
     QuestionMaster.create(question_id: q.id, player_id: @current_player.id)
     input = get_input_from_player
-    if input == "exit"
-      exit
-    end
+    exit?(input)
     answer = answers[input.to_i-1]
     clear_console
     correct?(q, answer)
@@ -132,10 +95,9 @@ def asker(q_array)
   end
 end
 
-def asked?(q)
-
+def exit?(input)
+  exit if input == "exit"
 end
-
 
 welcome
 # new_user?

@@ -33,6 +33,20 @@ class Question < ActiveRecord::Base
     "Entertainment: Cartoon & Animations"=>32
   }
 
+  def self.generate_questions(category, difficulty, player)
+    questions_array = []
+    until questions_array.length == 4
+      question = get_question(category, difficulty)
+      question["style"] = question.delete("type")
+      # binding.pry
+      q = self.find_or_create_by(question)
+      if !QuestionMaster.validate_question(q, player)
+        questions_array << q
+      end
+    end
+    questions_array
+  end
+
   def self.display_categories
     @categories.each_with_index { |(category,value), i| puts "#{i+1} #{category}"}
   end
