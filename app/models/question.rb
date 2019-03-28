@@ -35,7 +35,7 @@ class Question < ActiveRecord::Base
 
   def self.generate_questions(category, difficulty, player)
     questions_array = []
-    until questions_array.length == 1
+    until questions_array.length == 10
       question = get_question(category, difficulty)
       question["style"] = question.delete("type")
       q = self.find_or_create_by(question)
@@ -84,7 +84,7 @@ class Question < ActiveRecord::Base
 
   def get_answers()
     # puts "Correct answer is #{self["correct_answer"]}"
-    puts 
+    puts
     answers = []
     answers << self["correct_answer"]
     answers << JSON.parse(self["incorrect_answers"])

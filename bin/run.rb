@@ -186,6 +186,7 @@ def choose_mode
 end
 
 def run_game
+  clear_console
   welcome #cli
   sleep(1)
   username = get_username #cli
