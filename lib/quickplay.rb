@@ -2,6 +2,8 @@ class Quickplay < Gamemode
   def asker
     while true
       q = Question.quick_question(@current_player)
+      puts "m - main menu"
+      puts "exit - quit game"
       delineate_30
       puts "Category: #{q["category"]}"
       puts q["question"]

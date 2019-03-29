@@ -1,12 +1,12 @@
 def welcome
   puts "You've been captured by me - The Almighty BIDDLER!!!"
-  sleep(0.7)
+  sleep(0.5)
   puts "\n.....and this time the Ratman isn't here to save the day"
 end
 
 def get_username
   puts "\nTell the console your username."
-  sleep(0.7)
+  sleep(0.5)
   print "Enter your username > "
   input = $stdin.gets.chomp.downcase
   if input.length < 1
@@ -22,17 +22,17 @@ def main_menu
   puts "Here are your options:"
   sleep(0.15)
   puts "\n1 Start Game"
-  sleep(0.15)
+  sleep(0.1)
   puts "\n2 Stats"
-  sleep(0.15)
+  sleep(0.1)
   puts "\n3 Scoreboard"
-  sleep(0.15)
+  sleep(0.1)
   puts "\n4 Reset Your Questions"
-  sleep(0.15)
+  sleep(0.1)
   puts "\n5 Exit"
-  sleep(0.15)
+  sleep(0.1)
   delineate_30
-  sleep(0.15)
+  sleep(0.1)
   print "Pick a number > "
 end
 
@@ -47,7 +47,7 @@ def get_category
   puts
   print "Pick a number > "
   input = get_input_from_player.to_i
-  if input < 0 || input > 24 ||
+  if input < 0 || input > 24
     invalid_input
     get_category
   else
@@ -64,6 +64,8 @@ def get_difficulty
   print "Difficulty > "
   input = get_input_from_player.to_i
   case input
+  when 0
+    difficulty = ''
   when 1
     difficulty = 'easy'
   when 2
@@ -124,8 +126,10 @@ end
 
 def invalid_input
   clear_console
+  sleep(0.2)
   puts "Valid number..please."
   puts
+  sleep(0.3)
 end
 
 def warning
@@ -135,6 +139,7 @@ end
 
 def cya
   puts "I hope you feel smarter now, maybe next time you'll play for real."
+  puts
 end
 
 def delineate_30
