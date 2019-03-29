@@ -6,5 +6,6 @@ class Classic < Gamemode
     else
       puts "\nMaybe in another life..."
     end
+    sleep(1)
   end
 end

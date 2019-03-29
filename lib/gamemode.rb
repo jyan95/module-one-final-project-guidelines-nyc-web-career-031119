@@ -60,5 +60,6 @@ class Gamemode
   def game_over
     @current_player.update_streak(@streak) if @streak > @current_player.streak
     @current_player.update_high_score(@score) if @score > @current_player.high_score
+    sleep(1)
   end
 end

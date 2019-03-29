@@ -34,5 +34,6 @@ class Suddendeath < Gamemode
   def game_over
     super
     puts "\nYou never stood a chance." if @life == 0
+    sleep(1)
   end
 end
