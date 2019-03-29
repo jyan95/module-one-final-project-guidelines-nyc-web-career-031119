@@ -5,9 +5,11 @@ def login(username)
   clear_console
   player = Player.validate(username)
   if player
+    sleep(0.3)
     puts "Here to try your luck again, #{player.username}...?"
   else
     player = Player.new_user(username)
+    sleep(0.3)
     puts "Welcome to my game, #{player.username}!"
   end
   @current_player = player
