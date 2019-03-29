@@ -1,42 +1,118 @@
 def welcome
-  puts "WELCOME TO MY GAME"
+  puts "You've been captured by me - The Almighty BIDDLER!!!"
+  sleep(0.7)
+  puts "\n.....and this time the Ratman isn't here to save the day"
 end
 
 def get_username
-  print "please enter your username: "
-  username = $stdin.gets.chomp.downcase
+  puts "\nTell the console your username."
+  sleep(0.7)
+  print "Enter your username > "
+  input = $stdin.gets.chomp.downcase
+  if input.length < 1
+    invalid_input
+    get_username
+  else
+    username = input
+  end
 end
 
 def main_menu
   delineate_30
   puts "Here are your options:"
-  puts "1 Start Game"
-  puts "2 Stats"
-  puts "3 Scoreboard"
-  puts "4 Reset Your Questions"
-  puts "5 Exit"
+  sleep(0.15)
+  puts "\n1 Start Game"
+  sleep(0.15)
+  puts "\n2 Stats"
+  sleep(0.15)
+  puts "\n3 Scoreboard"
+  sleep(0.15)
+  puts "\n4 Reset Your Questions"
+  sleep(0.15)
+  puts "\n5 Exit"
+  sleep(0.15)
   delineate_30
-  print "Please enter a number: "
+  sleep(0.15)
+  print "Pick a number > "
 end
 
 def prompt
-  puts "here are your options"
+  puts "Here are your options:"
 end
 
-def get_category_difficulty
-  puts "Choose a category #(leave blank for all)"
+def get_category
+  puts "Choose a category (leave blank for all)"
   puts "-"*30
   Question.display_categories
+  puts
+  print "Pick a number > "
   input = get_input_from_player.to_i
-  category = Question.get_category_name(input)
-  clear_console
+  if input < 0 || input > 24 ||
+    invalid_input
+    get_category
+  else
+    category = Question.get_category_name(input)
+    category
+  end
+end
+
+def get_difficulty
   puts "Choose a difficulty (leave blank for all)"
   puts '-'*30
   Question.display_difficulty
-  difficulty = $stdin.gets.chomp.downcase
+  puts
+  print "Difficulty > "
+  input = get_input_from_player.to_i
+  case input
+  when 1
+    difficulty = 'easy'
+  when 2
+    difficulty = 'medium'
+  when 3
+    difficulty = 'hard'
+  else
+    invalid_input
+    get_difficulty
+  end
+  difficulty
+end
+
+def get_category_difficulty
+  category = get_category
+  clear_console
+  difficulty = get_difficulty
   clear_console
   return category, difficulty
 end
+
+# def get_category_difficulty
+#   puts "Choose a category (leave blank for all)"
+#   puts "-"*30
+#   Question.display_categories
+#   puts
+#   print "Pick a number > "
+#   input = get_input_from_player.to_i
+#   category = Question.get_category_name(input)
+#   clear_console
+#   puts "Choose a difficulty (leave blank for all)"
+#   puts '-'*30
+#   Question.display_difficulty
+#   puts
+#   print "Difficulty > "
+#   input = get_input_from_player.to_i
+#   case input
+#   when 1
+#     difficulty = 'easy'
+#   when 2
+#     difficulty = 'medium'
+#   when 3
+#     difficulty = 'hard'
+#   else
+#     get_category_difficulty
+#   end
+#   clear_console
+#   return category, difficulty
+# end
 
 def clear_console
   system('clear')
@@ -47,15 +123,18 @@ def get_input_from_player
 end
 
 def invalid_input
-  puts "Please enter a valid number"
+  clear_console
+  puts "Valid number..please."
+  puts
 end
 
 def warning
   puts "Are you sure? (y/n)"
+  puts "> "
 end
 
 def cya
-  puts "Cy@"
+  puts "I hope you feel smarter now, maybe next time you'll play for real."
 end
 
 def delineate_30
@@ -63,16 +142,35 @@ def delineate_30
 end
 
 def right_answer
-  puts "u rite..."
+  responses = [
+    "Wow! ur soOoOooO Smart!",
+    "Lucky guess...",
+    "hmm.. didn't think you'd get that one",
+    "Well done! you're smarter than a 5th grader",
+    "why do you know that...",
+    "wooOOooW look at you!"
+  ]
+  puts "*CORRECT*\n#{responses[rand(0..responses.length-1)]}"
 end
 
 def wrong_answer
-  puts "Nice try."
+  responses = [
+    "lol nice try..",
+    "How did you get that wrong?!",
+    "That one was so easy...",
+    "wow I can't believe you got that one wrong!",
+    "even my dog could've answered that one..",
+  ]
+  puts "*INCORRECT*\n#{responses[rand(0..responses.length-1)]}"
 end
 
 def exit?(input)
   # game_over if input == "exit"
-  exit if input == "exit"
+  if input == "exit"
+    clear_console
+    cya
+    exit
+  end
 end
 
 def back_to_menu(input)
