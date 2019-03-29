@@ -13,4 +13,4 @@ Using questions from the [Open Tivia Database API](https://opentdb.com/), we hav
 6. Start the game with `ruby bin/run.rb`
 
 ### Contributors
-whosale, jyan95
+[whosale](https://github.com/whosAle), [jyan95](https://github.com/jyan95)
