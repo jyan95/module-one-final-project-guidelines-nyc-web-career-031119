@@ -37,6 +37,7 @@ class Gamemode
       qm.update_correct(true)
       increase_score(question)
       @streak += 1
+      @current_player.update_streak(@streak) if @streak > @current_player.streak
     else
       wrong_answer #play sound, minus life
       qm.update_correct(false)
@@ -58,7 +59,6 @@ class Gamemode
   end
 
   def game_over
-    @current_player.update_streak(@streak) if @streak > @current_player.streak
     @current_player.update_high_score(@score) if @score > @current_player.high_score
     sleep(1)
   end

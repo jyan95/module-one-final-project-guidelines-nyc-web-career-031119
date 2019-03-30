@@ -197,7 +197,6 @@ def run_game
   play
 end
 
-
 run_game
 
 ##ORACLE

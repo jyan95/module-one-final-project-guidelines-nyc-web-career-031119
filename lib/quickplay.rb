@@ -16,12 +16,14 @@ class Quickplay < Gamemode
       exit?(input)
       if input == "m"
         clear_console
+        @high_score = 0
         puts "I hope you feel smarter now, maybe next time you'll play for real."
         break
       end
       answer = answers[input.to_i-1]
       clear_console
       correct?(q, answer)
+      @high_score = 0
     end
   end
 end
